@@ -8,6 +8,13 @@ import (
 	g "github.com/kesslerdev/gitgen/pkg/generator"
 )
 
+type hygenOutputSpec struct {
+	Options hygenOutputOptions
+}
+
+type hygenOutputOptions struct {
+	ParentDir bool `yaml:"parentDir"`
+}
 type hygenOutputStrategy struct {
 	root      string
 	generator g.Generator
@@ -51,7 +58,7 @@ func (g *hygenOutputStrategy) BuildFile(output string, content []byte) (OutputFi
 		output = string(ApplyReplacer(&r, []byte(output), hygenReplacer))
 	}
 
-	if g.generator.Spec.Build.Output.ParentDir {
+	if g.generator.Spec.Build.Output.Options.(hygenOutputOptions).ParentDir {
 		output = fmt.Sprint(hygenReplacer(&ReplacerInfos{
 			Case: "exact",
 			Var:  "name",
@@ -93,4 +100,12 @@ func newHygenOutputStrategy(root string, g g.Generator) OutputStrategy {
 
 func init() {
 	AddOutputStrategy("hygen", newHygenOutputStrategy)
+	g.AddOutputOptionUnmarshalSpec("hygen", func(unmarshal func(interface{}) error) interface{} {
+		h := &hygenOutputSpec{}
+		if err := unmarshal(&h); err != nil {
+			panic(err)
+		}
+
+		return h.Options
+	})
 }

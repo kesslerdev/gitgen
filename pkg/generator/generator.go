@@ -47,7 +47,7 @@ type BuildSpec struct {
 // BuildInputSpec represent a build input related generator specification
 type BuildInputSpec struct {
 	Strategy string
-	Files    []string
+	Options  interface{}
 }
 
 // BuildReplacerSpec represent a build replacer related generator specification
@@ -60,9 +60,9 @@ type BuildReplacerSpec struct {
 
 // BuildOutputSpec represent a build output related generator specification
 type BuildOutputSpec struct {
-	Strategy  string
-	Copy      []string
-	ParentDir bool `yaml:"parentDir"`
+	Strategy string
+	Copy     []string
+	Options  interface{}
 }
 
 // NewGenerator create a generator config object

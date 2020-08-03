@@ -36,6 +36,10 @@ func hygenReplacer(i *ReplacerInfos) string {
 	}
 }
 
+func (g *hygenOutputStrategy) OutPath() string {
+	return fmt.Sprintf("_templates/%s/new", g.generator.Metadata.Name)
+}
+
 func (g *hygenOutputStrategy) BuildFile(output string, content []byte) (OutputFile, error) {
 	orig := output
 
@@ -55,22 +59,20 @@ func (g *hygenOutputStrategy) BuildFile(output string, content []byte) (OutputFi
 	}
 
 	return &hygenOutputFile{
-		originalPath:  orig,
-		path:          output,
-		content:       content,
-		generatorName: g.generator.Metadata.Name,
+		originalPath: orig,
+		path:         output,
+		content:      content,
 	}, nil
 }
 
 type hygenOutputFile struct {
-	originalPath  string
-	generatorName string
-	path          string
-	content       []byte
+	originalPath string
+	path         string
+	content      []byte
 }
 
 func (g *hygenOutputFile) GetPath() string {
-	return fmt.Sprintf("_templates/%s/new/%s.ejs.t", g.generatorName, strings.Replace(g.originalPath, string(os.PathSeparator), "_", -1))
+	return fmt.Sprintf("%s.ejs.t", strings.Replace(g.originalPath, string(os.PathSeparator), "_", -1))
 }
 
 const hygenFileFormat = `---

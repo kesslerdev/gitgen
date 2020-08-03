@@ -15,6 +15,7 @@ type OutputFile interface {
 // OutputStrategy is used to generate files for specific template runner
 type OutputStrategy interface {
 	BuildFile(output string, content []byte) (OutputFile, error)
+	OutPath() string
 }
 
 // OutputStrategyCreator is used to create new OutputStrategy

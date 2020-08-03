@@ -13,6 +13,7 @@ import (
 // ReplacerCaseChanger is used to change input case
 type ReplacerCaseChanger func(s string) string
 
+// ReplacerInfos When replacer is caller, send ReplacerInfos to output strategy
 type ReplacerInfos struct {
 	Case string
 	Var  string
@@ -25,6 +26,7 @@ var cases = []string{
 	"kebab", "kebab_uppercase",
 }
 
+// ApplyReplacer transform content by passing a replacer (can infer case)
 func ApplyReplacer(r *g.BuildReplacerSpec, content []byte, f func(*ReplacerInfos) string) []byte {
 	if r.Cases {
 		// foreach cases

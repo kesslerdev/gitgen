@@ -47,17 +47,42 @@ func BuildGenerator(root string, g *generator.Generator) error {
 		if err != nil {
 			return err
 		}
-
-		if err = os.MkdirAll(filepath.Dir(of.GetPath()), 0744); err != nil {
+		rp := filepath.Join(output.OutPath(), of.GetPath())
+		op, err := filepath.Abs(rp)
+		if err != nil {
+			return nil
+		}
+		if err = os.MkdirAll(filepath.Dir(op), 0744); err != nil {
 			return err
 		}
 
-		if err := ioutil.WriteFile(of.GetPath(), of.GetContent(), 0644); err != nil {
+		if err := ioutil.WriteFile(op, of.GetContent(), 0644); err != nil {
 			return err
 		}
 
-		sublogger.Debug().Msgf("File %s\n%s", of.GetPath(), of.GetContent())
-		sublogger.Info().Msgf("Generated %s", of.GetPath())
+		sublogger.Debug().Msgf("File %s\n%s", rp, of.GetContent())
+		sublogger.Info().Msgf("Generated %s", rp)
+	}
+
+	for _, c := range g.Spec.Build.Output.Copy {
+		path, err := filepath.Abs(filepath.Join(root, c))
+		if err != nil {
+			return nil
+		}
+
+		if content, err := ioutil.ReadFile(path); err == nil {
+			rp := filepath.Join(output.OutPath(), c)
+			outputPath, err := filepath.Abs(rp)
+			if err != nil {
+				return nil
+			}
+
+			if err := ioutil.WriteFile(outputPath, content, 0644); err != nil {
+				return err
+			}
+			sublogger.Debug().Msgf("File %s\n%s", rp, content)
+			sublogger.Info().Msgf("Copy %s", rp)
+		}
 	}
 
 	return nil

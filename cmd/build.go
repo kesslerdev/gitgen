@@ -50,10 +50,9 @@ to quickly create a Cobra application.`,
 		if !strings.HasSuffix(file, generator.GeneratorFileSuffix) {
 			file = fmt.Sprintf(generator.GeneratorFileFormat, file)
 		}
+		sublogger.Info().Msgf("Building generator at %s", file)
 		file = filepath.Join(dir, file)
 		g := generator.Generator{}
-
-		sublogger.Info().Msgf("Building generator at %s", file)
 
 		if err := generator.FromYamlFile(file, &g); err != nil {
 			sublogger.Fatal().Err(err).Send()

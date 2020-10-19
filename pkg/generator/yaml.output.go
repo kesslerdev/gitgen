@@ -22,7 +22,10 @@ func (v *BuildOutputSpec) UnmarshalYAML(unmarshal func(interface{}) error) error
 	}
 	v.Strategy = s.Strategy
 	v.Copy = s.Copy
-	v.Options = outputUnmarshalSpecs[s.Strategy](unmarshal)
+	outputUnmarshal := outputUnmarshalSpecs[s.Strategy]
+	if outputUnmarshal != nil {
+		v.Options = outputUnmarshal(unmarshal)
+	}
 
 	return nil
 }

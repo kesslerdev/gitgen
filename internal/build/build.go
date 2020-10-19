@@ -76,7 +76,9 @@ func BuildGenerator(root string, g *generator.Generator) error {
 			if err != nil {
 				return nil
 			}
-
+			if err = os.MkdirAll(filepath.Dir(outputPath), 0744); err != nil {
+				return err
+			}
 			if err := ioutil.WriteFile(outputPath, content, 0644); err != nil {
 				return err
 			}

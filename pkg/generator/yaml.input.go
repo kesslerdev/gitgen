@@ -20,7 +20,10 @@ func (v *BuildInputSpec) UnmarshalYAML(unmarshal func(interface{}) error) error 
 		panic(err)
 	}
 	v.Strategy = s.Strategy
-	v.Options = inputUnmarshalSpecs[s.Strategy](unmarshal)
+	unmarshalStrategy := inputUnmarshalSpecs[s.Strategy]
+	if unmarshalStrategy != nil {
+		v.Options = unmarshalStrategy(unmarshal)
+	}
 
 	return nil
 }

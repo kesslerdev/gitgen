@@ -47,7 +47,7 @@ type BuildSpec struct {
 // BuildInputSpec represent a build input related generator specification
 type BuildInputSpec struct {
 	Strategy string
-	Options  interface{}
+	Options  interface{} `yaml:",omitempty"`
 }
 
 // BuildReplacerSpec represent a build replacer related generator specification
@@ -62,7 +62,7 @@ type BuildReplacerSpec struct {
 type BuildOutputSpec struct {
 	Strategy string
 	Copy     []string
-	Options  interface{}
+	Options  interface{} `yaml:",omitempty"`
 }
 
 // NewGenerator create a generator config object
@@ -78,7 +78,7 @@ func NewGenerator(name string) *Generator {
 		Spec: Spec{
 			Build: BuildSpec{
 				Input: BuildInputSpec{
-					Strategy: "static",
+					Strategy: "git",
 				},
 				Output: BuildOutputSpec{
 					Strategy: "hygen",

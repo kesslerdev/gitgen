@@ -32,7 +32,7 @@ func (g *allInputStrategy) GetFiles() ([]string, error) {
 	return f, nil
 }
 
-// newAllInputStrategy create new Git Gather Strategy
+// newAllInputStrategy create new All Gather Strategy
 func newAllInputStrategy(root string, ges g.BuildInputSpec) InputStrategy {
 	return &allInputStrategy{
 		root: root,

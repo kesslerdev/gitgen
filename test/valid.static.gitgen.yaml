@@ -1,0 +1,14 @@
+apiVersion: gitgen.kesslerdev.io/v1
+kind: Generator
+metadata:
+  name: invalid.static
+spec:
+  build:
+    input:
+      strategy: static
+      options: 
+        - .gitignore
+    replacers: []
+    output:
+      strategy: hygen
+      copy: []
